@@ -1,0 +1,116 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+.imagen-pequena {
+    width: 200px;
+    height: 50px;
+    padding-bottom: 100px;
+}
+
+.imagen-grande {
+    width: 80%; 
+}
+
+.main-content {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    margin-top: 20px;
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+.imagen01 {
+    padding: 0 20px;
+    text-align: center;
+}
+
+.container {
+    flex: 1;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.container h1 {
+    text-align: center;
+}
+
+form table {
+    width: 100%;
+}
+
+form table tr td {
+    vertical-align: top;
+}
+
+.right-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.right-column .precio {
+    margin-bottom: 20px;
+}
+
+.right-column .botones {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+.right-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.botones {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    justify-content: space-between; /* Distribuir botones con espacio entre ellos */
+}
+
+.boton-calcular, .boton-limpiar, .boton-imprimir {
+    padding: 10px;
+    background-color: #887b97;
+    color: #eee;
+    border: solid 1px #0c0c0c;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.boton-calcular {
+    margin-right: 10px; 
+}
+
+.boton-calcular:hover, .boton-limpiar:hover, .boton-imprimir:hover {
+    background-color: #3a2a4d;
+}
+
+#advertencia {
+    background-color: darkgray;
+    border: solid 1px #111111;
+    color: #050505;
+    padding: 5px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+#resultado, #resultado-dolares {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #fff;
+    text-align: center;
+}
+footer {
+    background-color: #f0f0f0;
+    padding: 10px;
+    text-align: center;
+    margin-top: 20px;
+}
+

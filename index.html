@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boleta de Viaje</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="banner">
+        <img  src="https://firebasestorage.googleapis.com/v0/b/cine-ffce1.appspot.com/o/logo.png?alt=media&token=a420ee0f-a3eb-488c-9a42-dae0d4b847af" alt="Banner 1" class="imagen-pequena">
+        <img src="https://firebasestorage.googleapis.com/v0/b/cine-ffce1.appspot.com/o/banner.jfif?alt=media&token=ec74d5b4-66dc-4bbd-b4e0-7bce7f42bd79" width="80%" alt="Banner 2" class="imagen-grande">
+    </div>
+    <h2 style="text-align:center ;" > EL PLACER DE VIAJAR EN BUS</h2>
+    <div class="main-content">
+        <div class="imagen01">
+            <img src="https://firebasestorage.googleapis.com/v0/b/cine-ffce1.appspot.com/o/unidad.png?alt=media&token=b7c13bd5-27c6-4dec-bda1-f990517c6bcc" alt="Unidad de transporte">
+        </div>
+        <div class="container">
+            <h1>Boleta de Viaje</h1>
+
+            <form id="boletaForm">
+                <table>
+                    <tr>
+                        <td>
+                            <label for="fecha">Fecha:</label>
+                            <input type="date" id="fecha" name="fecha"><br><br>
+                            
+                            <label for="dni">DNI:</label>
+                            <input type="text" id="dni" name="dni"><br><br>
+                            
+                            <label for="ruta">Seleccione la ruta:</label>
+                            <select id="ruta" name="ruta" onchange="actualizarPrecio()">
+                                <option value="lima-mala" data-tarifa="20.00">Lima - Mala</option>
+                                <option value="lima-canete" data-tarifa="25.00">Lima - Cañete</option>
+                                <option value="lima-chincha" data-tarifa="30.00">Lima - Chincha</option>
+                                <option value="lima-pisco" data-tarifa="40.00">Lima - Pisco</option>
+                            </select><br><br>
+                            
+                            <div id="resultado" style="display: none;">
+                                <p>Total en Soles: <span id="totalSoles">0.00</span></p>
+                                 <p>Total en Dólares: <span id="totalDolares">0.00</span></p>         
+                            </div>
+                        </td>
+                        <td>
+                            <div class="right-column">
+                                <div class="precio">
+                                    <label for="precio">Precio por pasaje (S/):</label>
+                                    <input type="number" id="precio" name="precio" min="0.00" step="0.01" value="20.00" readonly><br><br>
+                                    
+                                    <label for="cantidad">Cantidad de pasajes:</label>
+                                    <input type="number" id="cantidad" name="cantidad" min="1" value="1" onchange="verificarCantidad()"><br><br>
+                                    
+                                    <label for="servicio">Seleccione el tipo de servicio:</label>
+                                    <select id="servicio" name="servicio" onchange="actualizarPrecio()">
+                                        <option value="economico">Económico</option>
+                                        <option value="ejecutivo">Ejecutivo</option>
+                                        <option value="presidencial">Presidencial</option>
+                                    </select><br><br>
+                                    
+                                    <div style="background-color: darkgray; border: solid 1px color( rgb(17, 17, 17)) ;" id="advertencia" style="color: rgb(5, 5, 5);"></div>
+
+                                </div>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <button type="button" class="boton-calcular" onclick="calcularTotal()">Calcular</button>
+                                        </td>
+                                        <td style="text-align: right;">
+                                            <button type="button" class="boton-limpiar" onclick="limpiarForm()">Limpiar</button>
+                                        </td>
+                                        <td style="text-align: right;">
+                                            <button type="button" class="boton-imprimir" onclick="imprimirBoleta()">Imprimir</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="botones">
+                                <div class="medio-pago">
+                                    <label for="medioPago">Medio de Pago:</label><br>
+                                    <input type="radio" id="efectivo" name="pago" value="efectivo" checked>
+                                    <label for="efectivo">Efectivo</label><br>
+                                    <input type="radio" id="tarjeta-credito" name="pago" value="tarjeta-credito">
+                                    <label for="tarjeta-credito">Tarjeta de Crédito</label><br>
+                                    <input type="radio" id="tarjeta-debito" name="pago" value="tarjeta-debito">
+                                    <label for="tarjeta-debito">Tarjeta de Débito</label><br><br>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            
+        </div>
+    </div>
+
+    
+    <script >
+function actualizarPrecio() {
+    const rutaSelect = document.getElementById('ruta');
+    const precioInput = document.getElementById('precio');
+    const tipoServicio = document.getElementById('servicio').value;
+
+    // Obtener la tarifa base de la ruta seleccionada
+    const tarifaBase = parseFloat(rutaSelect.options[rutaSelect.selectedIndex].getAttribute('data-tarifa'));
+
+    // Aplicar incremento según el tipo de servicio
+    let tarifaFinal = tarifaBase;
+    if (tipoServicio === 'ejecutivo') {
+        tarifaFinal *= 1.10; // Aumento del 10%
+    } else if (tipoServicio === 'presidencial') {
+        tarifaFinal *= 1.15; // Aumento del 15%
+    }
+
+    precioInput.value = tarifaFinal.toFixed(2);
+}
+
+function calcularTotal() {
+    const cantidadInput = document.getElementById('cantidad');
+    const tipoCambio = 3.5;
+
+    const precioUnitario = parseFloat(document.getElementById('precio').value);
+    let cantidadPasajes = parseInt(cantidadInput.value);
+
+    if (cantidadPasajes >= 3) {
+        cantidadPasajes--;
+    }
+
+    const totalSoles = precioUnitario * cantidadPasajes;
+    const totalDolares = totalSoles / tipoCambio;
+
+    // Mostrar resultados en la página
+    document.getElementById('totalSoles').textContent = totalSoles.toFixed(2);
+    document.getElementById('totalDolares').textContent = totalDolares.toFixed(2);
+
+    // Mostrar div resultado
+    document.getElementById('resultado').style.display = 'block';
+
+    // Cambiar color de los resultados
+    document.getElementById('totalSoles').style.color = 'blue';
+    document.getElementById('totalDolares').style.color = 'green';
+}
+
+function limpiarForm() {
+    document.getElementById('boletaForm').reset();
+    document.getElementById('resultado').style.display = 'none';
+    document.getElementById('totalSoles').textContent = '0.00';
+    document.getElementById('totalDolares').textContent = '0.00';
+    document.getElementById('totalSoles').style.color = '';
+    document.getElementById('totalDolares').style.color = '';
+}
+
+function verificarCantidad() {
+    const cantidadInput = document.getElementById('cantidad');
+    let cantidadPasajes = parseInt(cantidadInput.value);
+    const servicioSelect = document.getElementById('servicio');
+
+    // Limpiamos cualquier advertencia previa
+    document.getElementById('advertencia').textContent = '';
+
+    // Si la cantidad de pasajes es mayor a 3, mostrar advertencia
+    if (cantidadPasajes >= 3) {
+        document.getElementById('advertencia').textContent = 'Si compra 3 o mas pasajes, se calculará un pasaje menos.';
+    }
+}
+
+function imprimirBoleta() {
+    window.print();
+}
+
+    </script>
+        <footer>
+                
+            <p>&copy; 2024 Cruz del Sur. Todos los derechos reservados.</p>
+        </footer>
+</body>
+</html>
+
+
